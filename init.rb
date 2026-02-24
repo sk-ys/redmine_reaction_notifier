@@ -1,3 +1,5 @@
+require_relative 'lib/redmine_reaction_notifier/reaction_patch'
+
 Redmine::Plugin.register :redmine_reaction_notifier do
   name 'Redmine Reaction Notifier'
   author 'sk-ys'
