@@ -23,7 +23,7 @@ class ReactionNotifierMailerTest < ActionMailer::TestCase
 
     reaction = build_reaction(reactor, issue)
 
-    mail = ReactionNotifierMailer.reaction_added(reaction)
+    mail = ReactionNotifierMailer.reaction_added(author, reaction)
 
     assert_equal [author.mail], mail.to
     assert_match reactor.name, mail.subject
@@ -38,7 +38,7 @@ class ReactionNotifierMailerTest < ActionMailer::TestCase
 
     reaction = build_reaction(reactor, journal)
 
-    mail = ReactionNotifierMailer.reaction_added(reaction)
+    mail = ReactionNotifierMailer.reaction_added(author, reaction)
 
     assert_equal [author.mail], mail.to
     assert_match reactor.name, mail.subject

@@ -1,15 +1,14 @@
 class ReactionNotifierMailer < Mailer
-  def reaction_added(reaction)
-    @reaction       = reaction
-    @reactor        = reaction.user
-    @reactable      = reaction.reactable
-    @author         = reaction.reactable_author
-    @reactable_url  = reactable_url(@reactable)
-
-    set_language_if_valid(@author.language.presence || Setting.default_language)
+  def reaction_added(author, reaction)
+    @author           = author # Used as display name in the email 'From' field
+    @reaction         = reaction
+    @reactor          = reaction.user
+    @reactable        = reaction.reactable
+    @reactable_author = reaction.reactable_author
+    @reactable_url    = reactable_url(@reactable)
 
     mail(
-      to:      @author.mail,
+      to:      reaction.reactable_author,
       subject: "[#{Setting.app_title}] #{l(:mail_subject_reaction_added, reactor: @reactor.name)}"
     )
   end
