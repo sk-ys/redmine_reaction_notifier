@@ -1,4 +1,4 @@
-# redmine_reaction_notifier
+# Redmine Reaction Notifier
 
 A Redmine plugin that sends email notifications to content authors when another user reacts to their post.
 
@@ -30,4 +30,4 @@ bundle exec ruby -Iplugins/redmine_reaction_notifier/test \
 
 ## License
 
-MIT
+- GPLv2
