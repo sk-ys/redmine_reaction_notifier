@@ -1,0 +1,3 @@
+ja:
+  mail_subject_reaction_added: "%{reactor} さんがあなたの投稿にリアクションしました"
+  mail_body_reaction_added_intro: "%{reactor} さんがあなたの投稿にリアクションしました。"
