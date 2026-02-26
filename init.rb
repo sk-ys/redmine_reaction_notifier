@@ -4,7 +4,7 @@ Redmine::Plugin.register :redmine_reaction_notifier do
   name 'Redmine Reaction Notifier'
   author 'sk-ys'
   description 'Sends email notifications to the author when reactions are added'
-  version '0.1.0'
+  version '0.1.1'
   url 'https://github.com/sk-ys/redmine_reaction_notifier'
   author_url 'https://github.com/sk-ys'
   requires_redmine version_or_higher: '6.1.0'
