@@ -6,10 +6,13 @@ The reaction feature was introduced in Redmine 6.1 ([#42630](https://www.redmine
 
 ## Features
 
-- Sends an email to the author of an issue, journal note, forum message, news item, or wiki page when someone reacts to it.
-- Skips notification when the reactor is the same person as the author.
-- Skips notification when the author's account is inactive or has no email address.
-- Respects the author's language setting for the notification email.
+- Sends an email when someone reacts to content. Recipients are determined as follows:
+  - **Issue**: the assigned user (`assigned_to`) if present; otherwise the issue author.
+  - **Journal**: the user who created the journal entry.
+  - **Message**, **News**, **WikiContent**: the content author.
+- Skips notification when the reactor is the same person as the recipient (author or assignee).
+- Skips notification when the recipient's account is inactive or has no email address.
+- Respects the recipient's language setting for the notification email.
 
 ## Requirements
 
