@@ -8,7 +8,7 @@ module RedmineReactionNotifier
 
     def reactable_author
       case reactable
-      when Issue       then reactable.author
+      when Issue       then reactable.assigned_to || reactable.author
       when Journal     then reactable.user
       when Message     then reactable.author
       when News        then reactable.author
