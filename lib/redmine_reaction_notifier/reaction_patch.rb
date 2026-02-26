@@ -3,7 +3,7 @@ module RedmineReactionNotifier
     extend ActiveSupport::Concern
 
     included do
-      after_create :notify_reaction_added
+      after_commit :notify_reaction_added
     end
 
     def reactable_author
