@@ -1,9 +1,7 @@
 module RedmineReactionNotifier
   module ReactionPatch
-    extend ActiveSupport::Concern
-
-    included do
-      after_commit :notify_reaction_added, on: :create
+    def self.included(base)
+      base.after_commit :notify_reaction_added, on: :create
     end
 
     def reactable_author
