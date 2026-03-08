@@ -1,0 +1,25 @@
+<p id="reaction_notification_pref_row">
+  <%= label_tag 'pref[reaction_notification]', l(:label_reaction_notification) %>
+  <%= hidden_field_tag 'pref[reaction_notification]', 0, id: nil %>
+  <%= check_box_tag 'pref[reaction_notification]', 1, user.pref.reaction_notification %>
+</p>
+
+<script>
+  // Move the reaction notification preference field into the mail notification fieldset
+  (function moveReactionNotificationPreference() {
+    var row = document.getElementById('reaction_notification_pref_row');
+    var mailSelect = document.getElementById('user_mail_notification');
+    if (!row || !mailSelect) {
+      return;
+    }
+
+    var mailFieldset = mailSelect.closest('fieldset');
+    if (!mailFieldset || row.parentElement === mailFieldset) {
+      return;
+    }
+
+    mailFieldset.appendChild(row);
+    // Move label to the end of the line
+    row.appendChild(row.querySelector('label'));
+  })();
+</script>

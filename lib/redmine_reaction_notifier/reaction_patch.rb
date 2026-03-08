@@ -3,7 +3,7 @@ module RedmineReactionNotifier
     extend ActiveSupport::Concern
 
     included do
-      after_commit :notify_reaction_added
+      after_commit :notify_reaction_added, on: :create
     end
 
     def reactable_author
@@ -24,6 +24,7 @@ module RedmineReactionNotifier
       return if author == user
       return unless author.active?
       return if author.mail.blank?
+      return unless author.pref.reaction_notification
 
       ReactionNotifierMailer.reaction_added(User.current, self).deliver_later
     rescue StandardError => e

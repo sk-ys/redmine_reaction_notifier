@@ -98,6 +98,44 @@ class ReactionNotifierMailerTest < ActionMailer::TestCase
     author.update_column(:status, User::STATUS_ACTIVE)
   end
 
+  test 'notify_reaction_added does not enqueue mail when author disabled notifications' do
+    reactor = users(:users_002)
+    author  = users(:users_003)
+    issue   = issues(:issues_001)
+    issue.update_column(:author_id, author.id)
+
+    # Disable notification
+    author.pref[:reaction_notification] = '0'
+    author.pref.save
+
+    reaction = build_reaction(reactor, issue)
+    assert_enqueued_emails 0 do
+      reaction.send(:notify_reaction_added)
+    end
+  ensure
+    # Reset to default (enabled)
+    author.pref.others.delete(:reaction_notification)
+    author.pref.others.delete('reaction_notification')
+    author.pref.save
+  end
+
+  test 'notify_reaction_added enqueues mail when author notification preference is not set (default)' do
+    reactor = users(:users_002)
+    author  = users(:users_003)
+    issue   = issues(:issues_001)
+    issue.update_column(:author_id, author.id)
+
+    # Ensure default (enabled) by removing any existing preference
+    author.pref.others.delete(:reaction_notification)
+    author.pref.others.delete('reaction_notification')
+    author.pref.save
+
+    reaction = build_reaction(reactor, issue)
+    assert_enqueued_emails 1 do
+      reaction.send(:notify_reaction_added)
+    end
+  end
+
   private
 
   # Build a Reaction-like object without touching the database.

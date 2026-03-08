@@ -13,6 +13,9 @@ The reaction feature was introduced in Redmine 6.1 ([#42630](https://www.redmine
 - Skips notification when the reactor is the same person as the recipient (author or assignee).
 - Skips notification when the recipient's account is inactive or has no email address.
 - Respects the recipient's language setting for the notification email.
+- **Users can enable/disable reaction notifications** in their account preferences (My account > Preferences).
+  - By default, notifications are enabled.
+  - No database table modifications required; uses Redmine's built-in `UserPreference` model.
 
 ## Requirements
 
