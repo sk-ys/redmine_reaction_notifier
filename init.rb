@@ -1,4 +1,6 @@
 require_relative 'lib/redmine_reaction_notifier/reaction_patch'
+require_relative 'lib/redmine_reaction_notifier/hooks'
+require_relative 'lib/redmine_reaction_notifier/user_preference_patch'
 
 Redmine::Plugin.register :redmine_reaction_notifier do
   name 'Redmine Reaction Notifier'
@@ -13,5 +15,8 @@ end
 Rails.configuration.after_initialize do
   unless Reaction.included_modules.include?(RedmineReactionNotifier::ReactionPatch)
     Reaction.include(RedmineReactionNotifier::ReactionPatch)
+  end
+  unless UserPreference.included_modules.include?(RedmineReactionNotifier::UserPreferencePatch)
+    UserPreference.include(RedmineReactionNotifier::UserPreferencePatch)
   end
 end

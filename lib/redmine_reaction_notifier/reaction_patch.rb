@@ -24,6 +24,7 @@ module RedmineReactionNotifier
       return if author == user
       return unless author.active?
       return if author.mail.blank?
+      return unless author.pref.reaction_notification
 
       ReactionNotifierMailer.reaction_added(User.current, self).deliver_later
     rescue StandardError => e

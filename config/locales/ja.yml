@@ -1,3 +1,4 @@
 ja:
   mail_subject_reaction_added: "%{reactor} さんがあなたの投稿にリアクションしました"
   mail_body_reaction_added_intro: "%{reactor} さんがあなたの投稿にリアクションしました。"
+  label_reaction_notification: "リアクション通知をメールで受け取る"
