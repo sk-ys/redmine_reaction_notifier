@@ -20,7 +20,7 @@ class ReactionNotifierMailer < Mailer
     when Issue
       issue_url(reactable)
     when Journal
-      issue_url(reactable.journalized, anchor: "note-#{reactable.id}")
+      issue_url(reactable.journalized, anchor: "change-#{reactable.id}")
     when Message
       board_message_url(reactable.board, reactable)
     when News
