@@ -12,7 +12,7 @@ Redmine::Plugin.register :redmine_reaction_notifier do
   requires_redmine version_or_higher: '6.1.0'
 end
 
-Rails.configuration.after_initialize do
+Rails.configuration.to_prepare do
   unless Reaction.included_modules.include?(RedmineReactionNotifier::ReactionPatch)
     Reaction.include(RedmineReactionNotifier::ReactionPatch)
   end
