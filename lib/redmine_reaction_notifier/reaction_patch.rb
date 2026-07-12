@@ -24,7 +24,7 @@ module RedmineReactionNotifier
       return if author.mail.blank?
       return unless author.pref.reaction_notification
 
-      ReactionNotifierMailer.reaction_added(User.current, self).deliver_later
+      ReactionNotifierMailer.reaction_added(author, self).deliver_later
     rescue StandardError => e
       Rails.logger.error "ReactionNotifier: failed to send notification - #{e.message}"
     end
