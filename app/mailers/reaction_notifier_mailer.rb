@@ -12,7 +12,7 @@ class ReactionNotifierMailer < Mailer
 
     mail(
       to:      reaction.reactable_author,
-      subject: "[#{Setting.app_title}] #{l(:mail_subject_reaction_added, reactor: @reactor.name)}"
+      subject: "[#{Setting.app_title}] #{l("reaction_notifier.mailer.reaction_added.subject", reactor: @reactor.name)}"
     )
   end
 

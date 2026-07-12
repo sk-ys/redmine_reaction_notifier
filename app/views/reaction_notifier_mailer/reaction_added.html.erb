@@ -1,5 +1,5 @@
 <p style="padding: 5px 10px;">
-	<%= l(:mail_body_reaction_added_intro, reactor: @reactor.name) %>
+	<%= l("reaction_notifier.mailer.reaction_added.body_intro", reactor: @reactor.name) %>
 </p>
 
 <div style="padding: 10px;">
@@ -7,7 +7,7 @@
 		<tr>
 			<td style="padding: 10px; border: none;">
 				<div style="text-align: left; padding: 5px 10px 0; font-size: small; font-weight: bold; color: #999;">
-					<%= l(:mail_label_reaction_target) %>:
+					<%= l("reaction_notifier.mailer.reaction_added.label_reaction_target") %>:
 					<span style="padding: 1px 5px; border: 1px solid #ccc; font-size: small; font-weight: normal;"><%= @reactable_type %></span>
 				</div>
 				<div style="padding: 2px 15px 5px;">
@@ -26,7 +26,7 @@
 			<tr>
 				<td style="padding: 10px; border: none;">
 					<div style="text-align: left; padding: 5px 10px 0; font-size: small; font-weight: bold; color: #999;">
-						<%= l(:mail_label_reaction_summary) %>:
+						<%= l("reaction_notifier.mailer.reaction_added.label_reaction_summary") %>:
 					</div>
 					<div style="padding: 2px 15px 5px;">
 						<%= truncate(strip_tags(@reactable_summary.to_s), length: 220) %>
