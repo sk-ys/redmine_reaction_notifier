@@ -9,6 +9,14 @@ class ReactionNotifierMailerTest < ActionMailer::TestCase
     Setting.protocol    = 'http'
     Setting.app_title   = 'Redmine'
     Setting.mail_from   = 'redmine@example.com'
+    ActionMailer::Base.deliveries.clear
+    # Clean up reactions to avoid unique constraint errors between test runs
+    Reaction.delete_all
+  end
+
+  teardown do
+    # Ensure all reactions are cleaned up after each test
+    Reaction.delete_all
   end
 
   # ------------------------------------------------------------------
@@ -28,6 +36,8 @@ class ReactionNotifierMailerTest < ActionMailer::TestCase
     assert_equal [author.mail], mail.to
     assert_match reactor.name, mail.subject
     assert_match reactor.name, mail.body.encoded
+    assert_match issue.subject, mail.body.encoded
+    assert_match issue.description.to_s[0, 10], mail.body.encoded
   end
 
   test 'reaction_added for a journal sends mail to the journal user' do
@@ -42,6 +52,7 @@ class ReactionNotifierMailerTest < ActionMailer::TestCase
 
     assert_equal [author.mail], mail.to
     assert_match reactor.name, mail.subject
+    assert_match journal.journalized.subject, mail.body.encoded
   end
 
   # ------------------------------------------------------------------
@@ -54,8 +65,10 @@ class ReactionNotifierMailerTest < ActionMailer::TestCase
     issue   = issues(:issues_001)
     issue.update_column(:author_id, author.id)
 
-    reaction = build_reaction(reactor, issue)
-    assert_enqueued_emails 1 do
+    reaction = create_reaction(reactor, issue)
+    ActionMailer::Base.deliveries.clear
+
+    assert_emails 1 do
       reaction.send(:notify_reaction_added)
     end
   end
@@ -66,20 +79,17 @@ class ReactionNotifierMailerTest < ActionMailer::TestCase
     issue.update_column(:author_id, user.id)
 
     reaction = build_reaction(user, issue)
-    assert_enqueued_emails 0 do
+    assert_emails 0 do
       reaction.send(:notify_reaction_added)
     end
   end
 
   test 'notify_reaction_added does not enqueue mail when author is nil' do
     reactor = users(:users_002)
-    issue   = issues(:issues_001)
-    # Set author to nil via an unsupported reactable class
-    reaction = build_reaction(reactor, issue)
-    reaction.stub(:reactable_author, nil) do
-      assert_enqueued_emails 0 do
-        reaction.send(:notify_reaction_added)
-      end
+    # Reactable is nil, so reactable_author is nil and no email is sent.
+    reaction = build_reaction(reactor, nil)
+    assert_emails 0 do
+      reaction.send(:notify_reaction_added)
     end
   end
 
@@ -91,7 +101,7 @@ class ReactionNotifierMailerTest < ActionMailer::TestCase
     author.update_column(:status, User::STATUS_LOCKED)
 
     reaction = build_reaction(reactor, issue)
-    assert_enqueued_emails 0 do
+    assert_emails 0 do
       reaction.send(:notify_reaction_added)
     end
   ensure
@@ -109,7 +119,7 @@ class ReactionNotifierMailerTest < ActionMailer::TestCase
     author.pref.save
 
     reaction = build_reaction(reactor, issue)
-    assert_enqueued_emails 0 do
+    assert_emails 0 do
       reaction.send(:notify_reaction_added)
     end
   ensure
@@ -122,7 +132,7 @@ class ReactionNotifierMailerTest < ActionMailer::TestCase
   test 'notify_reaction_added enqueues mail when author notification preference is not set (default)' do
     reactor = users(:users_002)
     author  = users(:users_003)
-    issue   = issues(:issues_001)
+    issue   = issues(:issues_002)
     issue.update_column(:author_id, author.id)
 
     # Ensure default (enabled) by removing any existing preference
@@ -130,8 +140,10 @@ class ReactionNotifierMailerTest < ActionMailer::TestCase
     author.pref.others.delete('reaction_notification')
     author.pref.save
 
-    reaction = build_reaction(reactor, issue)
-    assert_enqueued_emails 1 do
+    reaction = create_reaction(reactor, issue)
+    ActionMailer::Base.deliveries.clear
+
+    assert_emails 1 do
       reaction.send(:notify_reaction_added)
     end
   end
@@ -144,5 +156,9 @@ class ReactionNotifierMailerTest < ActionMailer::TestCase
     reaction.user      = reactor
     reaction.reactable = reactable
     reaction
+  end
+
+  def create_reaction(reactor, reactable)
+    Reaction.create!(user: reactor, reactable: reactable)
   end
 end
