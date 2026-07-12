@@ -1,3 +1,20 @@
-<%= l(:mail_body_reaction_added_intro, reactor: @reactor.name) %>
+<%= l("reaction_notifier.mailer.reaction_added.body_intro", reactor: @reactor.name) %>
 
-<%= @reactable_url %>
+─────────────────────────────────────
+
+<%= l("reaction_notifier.mailer.reaction_added.label_reaction_target") %>
+
+<%= l(:field_type) %>: <%= @reactable_type %>
+<% if @reactable_title.present? %>
+<%= l(:field_title) %>: <%= @reactable_title %>
+<% end %>
+URL: <%= @reactable_url %>
+
+<% if @reactable_summary.present? %>
+─────────────────────────────────────
+
+<%= l("reaction_notifier.mailer.reaction_added.label_reaction_summary") %>
+
+<%= truncate(strip_tags(@reactable_summary.to_s), length: 220) %>
+
+<% end %>
