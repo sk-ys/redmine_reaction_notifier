@@ -1,2 +1,38 @@
-<p><%= l(:mail_body_reaction_added_intro, reactor: @reactor.name) %></p>
-<p><%= link_to @reactable_url, @reactable_url %></p>
+<p style="padding: 5px 10px;">
+	<%= l(:mail_body_reaction_added_intro, reactor: @reactor.name) %>
+</p>
+
+<div style="padding: 10px;">
+	<table style="width: 100%; border-collapse: collapse; border: none;">
+		<tr>
+			<td style="padding: 10px; border: none;">
+				<div style="text-align: left; padding: 5px 10px 0; font-size: small; font-weight: bold; color: #999;">
+					<%= l(:mail_label_reaction_target) %>:
+					<span style="padding: 1px 5px; border: 1px solid #ccc; font-size: small; font-weight: normal;"><%= @reactable_type %></span>
+				</div>
+				<div style="padding: 2px 15px 5px;">
+					<h3 style="padding: 0; margin: 0;">
+						<% if @reactable_title.present? %>
+							<%= link_to @reactable_title, @reactable_url %>
+						<% else %>
+							<%= link_to @reactable_url, @reactable_url %>
+						<% end %>
+					</h3>
+				</div>
+			</td>
+		</tr>
+
+		<% if @reactable_summary.present? %>
+			<tr>
+				<td style="padding: 10px; border: none;">
+					<div style="text-align: left; padding: 5px 10px 0; font-size: small; font-weight: bold; color: #999;">
+						<%= l(:mail_label_reaction_summary) %>:
+					</div>
+					<div style="padding: 2px 15px 5px;">
+						<%= truncate(strip_tags(@reactable_summary.to_s), length: 220) %>
+					</div>
+				</td>
+			</tr>
+			<% end %>
+	</table>
+</div>

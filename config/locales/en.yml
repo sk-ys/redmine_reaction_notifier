@@ -1,4 +1,6 @@
 en:
   mail_subject_reaction_added: "%{reactor} reacted to your post"
   mail_body_reaction_added_intro: "%{reactor} reacted to your post."
+  mail_label_reaction_target: "Target"
+  mail_label_reaction_summary: "Summary"
   label_reaction_notification: "Receive email notifications for reactions"
